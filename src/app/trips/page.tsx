@@ -249,7 +249,7 @@ function TripCard({ trip }: { trip: Trip }) {
     <Link href={`/trips/${trip.slug}`} className="group block">
       <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full">
         {/* Image */}
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative h-64 overflow-hidden">
           <img
             src={imageUrl}
             alt={trip.name}

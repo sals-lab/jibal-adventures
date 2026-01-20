@@ -125,6 +125,8 @@ export interface TripAirtableFields {
   notIncluded?: string;
   type?: string;
   "Trip Dates"?: LinkedRecordIds;
+  maxGroupSize?: number;
+  featured?: boolean;
 }
 
 /** Trip record from Airtable (includes record ID) */
@@ -158,6 +160,8 @@ export interface Trip {
   createdAt: string;
   tripDateIds: string[];
   tripDates?: TripDate[];
+  maxGroupSize?: number;
+  featured?: boolean;
 }
 
 // -----------------------------------------------------------------------------
@@ -248,7 +252,7 @@ export interface ApplicationAirtableFields {
   phone: string;
   dateOfBirth: string;
   nationality: string;
-  passportNumber: string;
+  passportPhoto?: readonly AirtableAttachment[];
   fitnessLevel: FitnessLevel;
   experience?: string;
   emergencyContactName: string;
@@ -286,7 +290,7 @@ export interface Application {
   phone: string;
   dateOfBirth: string;
   nationality: string;
-  passportNumber: string;
+  passportPhoto: Attachment | null;
   fitnessLevel: FitnessLevel;
   experience: string | null;
   emergencyContactName: string;

@@ -154,6 +154,9 @@ export function transformTrip(
       (fields.notIncluded as string) ??
       null,
     type: (fields.Type as string) ?? (fields.type as string) ?? null,
+    maxGroupSize:
+      (fields["Max Group Size"] as number) ?? (fields.maxGroupSize as number),
+    featured: (fields.featured as boolean) ?? false,
     createdAt: record._rawJson?.createdTime ?? new Date().toISOString(),
     tripDateIds:
       (fields["Departures"] as string[]) ??
@@ -213,7 +216,9 @@ export function transformApplication(
     phone: (fields.phone as string) ?? "",
     dateOfBirth: (fields.dateOfBirth as string) ?? "",
     nationality: (fields.nationality as string) ?? "",
-    passportNumber: (fields.passportNumber as string) ?? "",
+    passportPhoto: parseSingleAttachment(
+      fields.passportPhoto ?? fields.passportPhoto
+    ),
     fitnessLevel:
       (fields.fitnessLevel as Application["fitnessLevel"]) ?? "intermediate",
     experience: (fields.experience as string) ?? null,
@@ -708,7 +713,47 @@ export async function expandApplicationWithDeparture(
   const departure = await fetchTripDateById(application.departureId);
   return { ...application, departure: departure ?? undefined };
 }
+// -----------------------------------------------------------------------------
+// Attachment Upload Function
+// -----------------------------------------------------------------------------
 
+export async function uploadAttachmentToRecord(
+  recordId: string,
+  fieldIdOrName: string,
+  base64Data: string,
+  filename: string,
+  contentType: string
+): Promise<{ url: string } | null> {
+  try {
+    // Remove data:image/xxx;base64, prefix if present
+    const base64Clean = base64Data.replace(/^data:[^;]+;base64,/, "");
+
+    // Use content.airtable.com and format: /{baseId}/{recordId}/{fieldId}/uploadAttachment
+    const url = `https://content.airtable.com/v0/${AIRTABLE_BASE_ID}/${recordId}/${fieldIdOrName}/uploadAttachment`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contentType,
+        file: base64Clean,
+        filename,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return null;
+    }
+
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+}
 // -----------------------------------------------------------------------------
 // Export base for advanced use cases
 // -----------------------------------------------------------------------------

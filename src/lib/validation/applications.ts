@@ -47,10 +47,7 @@ export const createApplicationSchema = z.object({
     .min(2, "Nationality is required")
     .max(100, "Nationality must be less than 100 characters"),
 
-  passportNumber: z
-    .string()
-    .min(5, "Please enter a valid passport number")
-    .max(20, "Passport number must be less than 20 characters"),
+  passportPhoto: z.string().optional(),
 
   fitnessLevel: z.enum(fitnessLevelValues, {
     message: "Please select your fitness level",

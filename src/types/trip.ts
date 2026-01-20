@@ -51,4 +51,6 @@ export interface Trip {
   status: string;
   tripDates: TripDate[];
   guides: Guide[];
+  maxGroupSize?: number;
+  featured?: boolean;
 }

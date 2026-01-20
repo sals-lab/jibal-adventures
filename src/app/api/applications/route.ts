@@ -7,6 +7,8 @@ import {
   createApplication,
   fetchTripDateById,
   fetchTripById,
+  uploadAttachmentToRecord,
+  TABLE_NAMES,
 } from "@/lib/airtable";
 import { validateApplication } from "@/lib/validation/applications";
 import { badRequest, notFound, errorResponse } from "@/lib/errors";
@@ -18,6 +20,10 @@ const CAL_BOOKING_LINK =
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
+    // Extract passport photo before validation (it's handled separately)
+    const passportPhoto = body.passportPhoto;
+    delete body.passportPhoto;
 
     const validation = validateApplication(body);
 
@@ -53,7 +59,7 @@ export async function POST(request: Request) {
       throw badRequest("This trip is not accepting applications");
     }
 
-    // Create application with exact Airtable field names from CSV
+    // Create application WITHOUT passport photo first
     const application = await createApplication({
       Trip: [trip.id],
       departure: [data.departureId],
@@ -62,7 +68,6 @@ export async function POST(request: Request) {
       Phone: data.phone,
       dateOfBirth: data.dateOfBirth,
       nationality: data.nationality,
-      passportNumber: data.passportNumber,
       "Fitness Level": data.fitnessLevel,
       Experience: data.experience || "",
       emergencyContactName: data.emergencyContactName,
@@ -78,10 +83,38 @@ export async function POST(request: Request) {
       Status: "applied",
     });
 
+    // Upload passport photo if provided
+    if (passportPhoto) {
+      // Detect content type from base64 prefix
+      let contentType = "image/jpeg";
+      let extension = "jpg";
+
+      if (passportPhoto.includes("image/png")) {
+        contentType = "image/png";
+        extension = "png";
+      } else if (passportPhoto.includes("application/pdf")) {
+        contentType = "application/pdf";
+        extension = "pdf";
+      }
+
+      const filename = `passport_${data.customerName.replace(
+        /\s+/g,
+        "_"
+      )}_${Date.now()}.${extension}`;
+
+      await uploadAttachmentToRecord(
+        application.id,
+        "passportPhoto", // Field name in Airtable
+        passportPhoto,
+        filename,
+        contentType
+      );
+    }
+
     const emailResult = await sendApplicationEmails({
       customerName: data.customerName,
       customerEmail: data.email,
-      customerPhone: data.email,
+      customerPhone: data.phone,
       tripName: trip.name,
       departureName: departure.name,
       departureDate: departure.startDate,

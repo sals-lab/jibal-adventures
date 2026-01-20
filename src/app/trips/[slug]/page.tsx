@@ -46,6 +46,7 @@ interface Trip {
   photos: { url: string; filename: string }[];
   tripDates: TripDate[];
   guides: Guide[];
+  maxGroupSize: number;
 }
 
 async function getTrip(slug: string): Promise<Trip | null> {
@@ -143,7 +144,7 @@ export default async function TripDetailPage({
             <QuickInfoItem
               icon={<UsersIcon />}
               label="Group Size"
-              value="Max 12"
+              value={`Max ${trip.maxGroupSize}`}
             />
           </div>
         </Container>

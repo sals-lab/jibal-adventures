@@ -38,7 +38,7 @@ interface FormData {
   phone: string;
   dateOfBirth: string;
   nationality: string;
-  passportNumber: string;
+  passportPhoto: string;
   fitnessLevel: string;
   experience: string;
   emergencyContactName: string;
@@ -58,7 +58,7 @@ const initialFormData: FormData = {
   phone: "",
   dateOfBirth: "",
   nationality: "",
-  passportNumber: "",
+  passportPhoto: "",
   fitnessLevel: "",
   experience: "",
   emergencyContactName: "",
@@ -110,17 +110,24 @@ export default function ApplicationPage({
       try {
         const response = await fetch(`/api/trips/${resolvedParams.slug}`);
         if (!response.ok) throw new Error("Trip not found");
-        const data = await response.json();
-        setTrip(data);
+
+        const result = await response.json(); // ✅ Changed
+        const tripData = result.data; // ✅ Extract data
+
+        if (!tripData) throw new Error("Trip not found");
+
+        setTrip(tripData); // ✅ Set extracted data
 
         // If departure ID is in URL, select that departure
-        if (departureId && data.tripDates) {
-          const departure = data.tripDates.find(
+        if (departureId && tripData.tripDates) {
+          const departure = tripData.tripDates.find(
             (d: TripDate) => d.id === departureId
           );
+
           if (departure) setSelectedDeparture(departure);
         }
       } catch (err) {
+        console.error("Error loading trip:", err);
         setError("Failed to load trip details");
       } finally {
         setLoading(false);
@@ -150,26 +157,40 @@ export default function ApplicationPage({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          tripId: trip?.id,
-          tripDateId: selectedDeparture.id,
+          departureId: selectedDeparture.id, // ✅ Changed from tripDateId to departureId
+          // Removed tripId - backend doesn't need it
         }),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        // Handle different error formats
+
+        // Enhanced error parsing
         let errorMessage = "Failed to submit application";
-        if (typeof data.error === "string") {
+
+        // Handle validation errors
+        if (data.details?.fields && Array.isArray(data.details.fields)) {
+          errorMessage =
+            "Please fix the following errors:\n" +
+            data.details.fields
+              .map((err: any) => {
+                if (typeof err === "string") return `• ${err}`;
+                if (err.field && err.message)
+                  return `• ${err.field}: ${err.message}`;
+                return `• ${JSON.stringify(err)}`;
+              })
+              .join("\n");
+        } else if (typeof data.error === "string") {
           errorMessage = data.error;
-        } else if (data.error?.message) {
-          errorMessage = data.error.message;
         } else if (data.message) {
           errorMessage = data.message;
-        } else if (Array.isArray(data.errors)) {
-          errorMessage = data.errors.map((e: any) => e.message || e).join(", ");
         }
+
+        console.error("Application submission error:", data);
         throw new Error(errorMessage);
       }
+
+      const result = await res.json();
 
       // Success - redirect to success page
       router.push(`/trips/${slug}/apply/success`);
@@ -266,60 +287,95 @@ export default function ApplicationPage({
             </h2>
             {trip.tripDates && trip.tripDates.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {trip.tripDates.map((date) => (
-                  <button
-                    key={date.id}
-                    type="button"
-                    onClick={() => setSelectedDeparture(date)}
-                    disabled={date.status !== "Open" || date.spotsLeft === 0}
-                    className={`p-4 rounded-xl border-2 transition-all text-left ${
-                      selectedDeparture?.id === date.id
-                        ? "border-[#BABCA7] bg-[#BABCA7]/10"
-                        : date.status === "Open" && date.spotsLeft > 0
-                        ? "border-[#E8E8E8] hover:border-[#BABCA7]"
-                        : "border-[#E8E8E8] opacity-50 cursor-not-allowed"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-[#121E1E]">
-                        {new Date(date.startDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </span>
-                      {selectedDeparture?.id === date.id && (
-                        <svg
-                          className="w-5 h-5 text-[#BABCA7]"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                    <div className="text-sm text-[#5A6666]">
-                      {date.spotsLeft} spots left • ${date.price || trip.price}
-                    </div>
-                  </button>
-                ))}
+                {trip.tripDates
+                  .sort(
+                    (a, b) =>
+                      new Date(a.startDate).getTime() -
+                      new Date(b.startDate).getTime()
+                  ) // ✅ Sort by date
+                  .map((date) => (
+                    <button
+                      key={date.id}
+                      type="button"
+                      onClick={() => setSelectedDeparture(date)}
+                      disabled={
+                        (date.status !== "open" && date.status !== "limited") || // ✅ Fixed capitalization
+                        date.spotsLeft === 0
+                      }
+                      className={`p-4 rounded-xl border-2 transition-all text-left ${
+                        selectedDeparture?.id === date.id
+                          ? "border-[#BABCA7] bg-[#BABCA7]/10"
+                          : (date.status === "open" ||
+                              date.status === "limited") &&
+                            date.spotsLeft > 0 // ✅ Fixed here too
+                          ? "border-[#E8E8E8] hover:border-[#BABCA7]"
+                          : "border-[#E8E8E8] opacity-50 cursor-not-allowed"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-semibold text-[#121E1E]">
+                          {new Date(date.startDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            }
+                          )}
+                        </span>
+                        {selectedDeparture?.id === date.id && (
+                          <svg
+                            className="w-5 h-5 text-[#BABCA7]"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="text-sm text-[#5A6666]">
+                        {date.spotsLeft} spots left • $
+                        {date.price || trip.price}
+                      </div>
+                    </button>
+                  ))}
               </div>
             ) : (
               <p className="text-[#5A6666]">No departure dates available</p>
             )}
           </div>
-
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700">
-              {error}
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <div className="flex items-start gap-3">
+                <svg
+                  className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div className="flex-1">
+                  <p className="font-semibold text-red-900 mb-2">
+                    Application Error
+                  </p>
+                  <div className="text-red-700 text-sm whitespace-pre-line">
+                    {error}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
-
           {/* Application Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Personal Information */}
@@ -375,20 +431,38 @@ export default function ApplicationPage({
               title="Travel Documents"
               description="Essential documentation for your journey"
             >
-              <InputField
-                label="Passport Number"
-                value={formData.passportNumber}
-                onChange={(v) => updateFormData("passportNumber", v)}
-                placeholder="Enter your passport number"
-                required
-              />
-              <p className="text-xs text-[#5A6666] mt-2 flex items-center gap-1">
-                <InfoIcon className="w-3 h-3" />
-                Your passport must be valid for at least 6 months beyond your
-                travel dates
-              </p>
+              <div>
+                <label className="block text-sm font-semibold text-[#121E1E] mb-2">
+                  Passport Photo <span className="text-red-600 ml-1">*</span>
+                </label>
+                <input
+                  type="file"
+                  accept="image/*,.pdf"
+                  required
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      // Convert to base64
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        updateFormData(
+                          "passportPhoto",
+                          reader.result as string
+                        );
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="w-full px-4 py-3 rounded-xl border border-[#E8E8E8] focus:outline-none focus:ring-2 focus:ring-[#BABCA7] focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#BABCA7] file:text-[#121E1E] hover:file:bg-[#D1D3C4]"
+                />
+                <p className="text-xs text-[#5A6666] mt-2 flex items-center gap-1">
+                  <InfoIcon className="w-3 h-3" />
+                  Upload a clear photo of your passport information page (JPG,
+                  PNG, or PDF). Your passport must be valid for at least 6
+                  months beyond your travel dates.
+                </p>
+              </div>
             </FormSection>
-
             {/* Fitness & Experience */}
             <FormSection
               icon={<FitnessIcon />}
@@ -466,7 +540,7 @@ export default function ApplicationPage({
                   onChange={(v) => updateFormData("allergies", v)}
                   placeholder="If none, write N/A"
                   rows={2}
-                  optional
+                  required
                 />
                 <TextareaField
                   label="Current Medications"
@@ -474,7 +548,7 @@ export default function ApplicationPage({
                   onChange={(v) => updateFormData("medications", v)}
                   placeholder="If none, write N/A"
                   rows={2}
-                  optional
+                  required
                 />
                 <TextareaField
                   label="Dietary Restrictions"
@@ -482,11 +556,10 @@ export default function ApplicationPage({
                   onChange={(v) => updateFormData("dietaryRestrictions", v)}
                   placeholder="Vegetarian, Vegan, Gluten-free, etc. If none, write N/A"
                   rows={2}
-                  optional
+                  required
                 />
               </div>
             </FormSection>
-
             {/* Additional Info */}
             <FormSection
               icon={<InfoIcon />}
@@ -624,6 +697,7 @@ function InputField({
     <div className={className}>
       <label className="block text-sm font-semibold text-[#121E1E] mb-2">
         {label}
+        {required && <span className="text-red-600 ml-1">*</span>}
         {optional && (
           <span className="text-[#5A6666] font-normal ml-1">(Optional)</span>
         )}
@@ -655,6 +729,7 @@ function PhoneInputField({
     <div>
       <label className="block text-sm font-semibold text-[#121E1E] mb-2">
         {label}
+        {required && <span className="text-red-600 ml-1">*</span>}
       </label>
       <PhoneInput
         international
@@ -707,6 +782,7 @@ function SelectField({
     <div>
       <label className="block text-sm font-semibold text-[#121E1E] mb-2">
         {label}
+        {required && <span className="text-red-600 ml-1">*</span>}
       </label>
       <select
         value={value}
@@ -746,6 +822,7 @@ function TextareaField({
     <div>
       <label className="block text-sm font-semibold text-[#121E1E] mb-2">
         {label}
+        {required && <span className="text-red-600 ml-1">*</span>}
         {optional && (
           <span className="text-[#5A6666] font-normal ml-1">(Optional)</span>
         )}

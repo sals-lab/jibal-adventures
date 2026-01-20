@@ -1,23 +1,12 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Section";
+import { Trip } from "@/app/page";
 
 // =============================================================================
 // FEATURED TRIPS SECTION
 // =============================================================================
 // Displays featured trips from the API as cards.
 // =============================================================================
-
-interface Trip {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  price: number;
-  duration: string;
-  difficulty: string;
-  continent: string;
-  photos: { url: string; filename: string }[];
-}
 
 interface FeaturedTripsProps {
   trips: Trip[];
@@ -74,7 +63,7 @@ function TripCard({ trip }: { trip: Trip }) {
     <Link href={`/trips/${trip.slug}`} className="group block">
       <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full">
         {/* Image */}
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative h-64 overflow-hidden">
           <img
             src={imageUrl}
             alt={trip.name}
@@ -119,7 +108,7 @@ function TripCard({ trip }: { trip: Trip }) {
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>{trip.duration}</span>
+              <span>{`${trip.duration} days`}</span>
             </div>
             <div className="text-right">
               <span className="text-[#121E1E] font-bold text-lg">

@@ -64,7 +64,7 @@ export async function sendApplicationEmails({
     customerEmail,
     customerPhone,
     tripName,
-    departureName,
+    departureName: departureName || "",
     departureDate,
     calendarBookingTime,
     applicationId,

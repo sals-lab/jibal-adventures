@@ -8,7 +8,20 @@ import { CTA } from "@/components/home/CTA";
 // HOME PAGE
 // =============================================================================
 
-async function getTrips() {
+export interface Trip {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  duration: string;
+  difficulty: string;
+  continent: string;
+  photos: { url: string; filename: string }[];
+  featured: boolean;
+}
+
+async function getTrips(): Promise<Trip[]> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const res = await fetch(`${baseUrl}/api/trips`, {
@@ -30,8 +43,8 @@ async function getTrips() {
 export default async function Home() {
   const trips = await getTrips();
 
-  // Show up to 3 featured trips
-  const featuredTrips = trips.slice(0, 3);
+  // Show all featured trips
+  const featuredTrips = trips.filter((trip) => trip.featured);
 
   return (
     <>
