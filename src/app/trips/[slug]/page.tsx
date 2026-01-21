@@ -98,7 +98,6 @@ export default async function TripDetailPage({
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url('${heroImage}')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121E1E] via-[#121E1E]/50 to-[#121E1E]/30" />
 
         {/* Content */}
         <Container className="relative z-10 flex-1 flex flex-col justify-end pb-8">
@@ -119,18 +118,32 @@ export default async function TripDetailPage({
           {/* Title */}
           <h1
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl"
-            style={{ color: "#FFFFFF" }}
+            style={{
+              color: "#FFFFFF",
+              textShadow:
+                "0 4px 20px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.9)",
+            }}
           >
             {trip.name}
           </h1>
 
           {/* Tagline */}
-          <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl">
+          <p
+            className="text-lg md:text-xl text-white mb-8 max-w-2xl"
+            style={{
+              textShadow: "0 4px 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,1)",
+            }}
+          >
             {trip.description}
           </p>
-
           {/* Quick Info Bar */}
-          <div className="flex flex-wrap items-center gap-6 md:gap-8">
+
+          <div
+            className="flex flex-wrap items-center gap-6 md:gap-8"
+            style={{
+              textShadow: "0 4px 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,1)",
+            }}
+          >
             <QuickInfoItem
               icon={<CalendarIcon />}
               label="Duration"
@@ -511,7 +524,7 @@ function QuickInfoItem({
         {icon}
       </div>
       <div>
-        <p className="text-white/60 text-xs">{label}</p>
+        <p className="text-white/70 text-xs font-semibold">{label}</p>
         <p className="text-white font-semibold">{value}</p>
       </div>
     </div>
