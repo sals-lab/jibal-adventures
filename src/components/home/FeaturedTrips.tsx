@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Section";
-import { Trip } from "@/app/page";
+import { Trip } from "@/types";
 
 // =============================================================================
 // FEATURED TRIPS SECTION
