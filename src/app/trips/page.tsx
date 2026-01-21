@@ -21,13 +21,18 @@ interface Trip {
 async function getTrips(): Promise<Trip[]> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    console.log("Fetching trips from:", `${baseUrl}/api/trips`);
+
     const res = await fetch(`${baseUrl}/api/trips`);
+    console.log("Response status:", res.status);
 
     if (!res.ok) {
+      console.log("Response not OK");
       return [];
     }
 
     const data = await res.json();
+    console.log("Trips fetched:", data.data?.length || 0);
     return data.data || [];
   } catch (error) {
     console.error("Failed to fetch trips:", error);
