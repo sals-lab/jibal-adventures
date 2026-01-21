@@ -5,6 +5,11 @@ import { ItineraryAccordion } from "@/components/trips/ItineraryAccordion.tsx";
 import { TripNavTabs } from "@/components/trips/TripNavTabs";
 import { DatesTable } from "@/components/trips/DatesTable";
 import { PhotoGallery } from "@/components/trips/PhotoGallery";
+import {
+  fetchTripBySlug,
+  expandTripWithTripDates,
+  expandTripWithGuides,
+} from "@/lib/airtable";
 
 export const dynamic = "force-dynamic";
 
@@ -12,70 +17,23 @@ export const dynamic = "force-dynamic";
 // TRIP DETAIL PAGE
 // =============================================================================
 
-interface TripDate {
-  id: string;
-  startDate: string;
-  endDate: string;
-  guideId: string | null;
-  maxCapacity: number;
-  spotsLeft: number;
-  price: number | null;
-  status: "open" | "limited" | "sold_out" | "cancelled";
-}
-
-interface Guide {
-  id: string;
-  name: string;
-  bio: string;
-  photo: { url: string } | null;
-}
-
-interface Trip {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  overview: string;
-  price: number;
-  depositAmount: number;
-  duration: number;
-  difficulty: string;
-  continent: string;
-  fitnessLevel: string;
-  itinerary: string;
-  included: string;
-  notIncluded: string;
-  photos: { url: string; filename: string }[];
-  tripDates: TripDate[];
-  guides: Guide[];
-  maxGroupSize: number;
-}
-
-async function getTrip(slug: string): Promise<Trip | null> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/trips`);
-
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.data || null;
-  } catch (error) {
-    console.error("Failed to fetch trip:", error);
-    return null;
-  }
-}
-
 export default async function TripDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const trip = await getTrip(slug);
 
-  if (!trip) {
+  // Fetch trip directly from Airtable
+  const baseTrip = await fetchTripBySlug(slug);
+
+  if (!baseTrip) {
     notFound();
   }
+
+  // Expand with related data
+  const tripWithDates = await expandTripWithTripDates(baseTrip);
+  const trip = await expandTripWithGuides(tripWithDates);
 
   const heroImage =
     trip.photos?.[0]?.url ||

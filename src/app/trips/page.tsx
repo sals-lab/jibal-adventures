@@ -1,44 +1,13 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Section";
+import { fetchActiveTrips, expandTripsWithTripDates } from "@/lib/airtable";
+import { Trip } from "@/types";
 
 export const dynamic = "force-dynamic";
+
 // =============================================================================
 // ALL TRIPS PAGE
 // =============================================================================
-
-interface Trip {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  price: number;
-  duration: string;
-  difficulty: string;
-  continent: string;
-  photos: { url: string; filename: string }[];
-}
-
-async function getTrips(): Promise<Trip[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    console.log("Fetching trips from:", `${baseUrl}/api/trips`);
-
-    const res = await fetch(`${baseUrl}/api/trips`);
-    console.log("Response status:", res.status);
-
-    if (!res.ok) {
-      console.log("Response not OK");
-      return [];
-    }
-
-    const data = await res.json();
-    console.log("Trips fetched:", data.data?.length || 0);
-    return data.data || [];
-  } catch (error) {
-    console.error("Failed to fetch trips:", error);
-    return [];
-  }
-}
 
 export default async function TripsPage({
   searchParams,
@@ -48,7 +17,9 @@ export default async function TripsPage({
   // Await searchParams in Next.js 15+
   const params = await searchParams;
 
-  const allTrips = await getTrips();
+  // Fetch trips directly from Airtable
+  const trips = await fetchActiveTrips();
+  const allTrips = await expandTripsWithTripDates(trips);
 
   // Filter trips based on search params
   let filteredTrips = allTrips;
