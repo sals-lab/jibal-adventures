@@ -4,6 +4,8 @@ import { JibalDifference } from "@/components/home/JibalDifference";
 import { FAQ } from "@/components/home/FAQ";
 import { CTA } from "@/components/home/CTA";
 
+export const dynamic = "force-dynamic";
+
 // =============================================================================
 // HOME PAGE
 // =============================================================================

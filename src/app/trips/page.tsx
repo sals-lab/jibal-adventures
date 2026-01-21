@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Section";
 
+export const dynamic = "force-dynamic";
 // =============================================================================
 // ALL TRIPS PAGE
 // =============================================================================

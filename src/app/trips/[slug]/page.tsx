@@ -6,6 +6,8 @@ import { TripNavTabs } from "@/components/trips/TripNavTabs";
 import { DatesTable } from "@/components/trips/DatesTable";
 import { PhotoGallery } from "@/components/trips/PhotoGallery";
 
+export const dynamic = "force-dynamic";
+
 // =============================================================================
 // TRIP DETAIL PAGE
 // =============================================================================

@@ -7,6 +7,8 @@ import { Container } from "@/components/ui/Section";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
+export const dynamic = "force-dynamic";
+
 // =============================================================================
 // APPLICATION FORM PAGE - With Phone Number Input
 // =============================================================================
