@@ -21,9 +21,7 @@ interface Trip {
 async function getTrips(): Promise<Trip[]> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/trips`, {
-      cache: "no-store",
-    });
+    const res = await fetch(`${baseUrl}/api/trips`);
 
     if (!res.ok) {
       return [];

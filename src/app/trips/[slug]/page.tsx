@@ -54,9 +54,7 @@ interface Trip {
 async function getTrip(slug: string): Promise<Trip | null> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/trips/${slug}`, {
-      cache: "no-store",
-    });
+    const res = await fetch(`${baseUrl}/api/trips`);
 
     if (!res.ok) return null;
     const data = await res.json();
