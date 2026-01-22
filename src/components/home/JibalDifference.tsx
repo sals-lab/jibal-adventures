@@ -121,8 +121,10 @@ export function JibalDifference() {
                 {feature.icon}
               </div>
 
-              {/* Title */}
-              <h3 className="text-xl font-bold text-[#BABCA7] mb-3">
+              <h3
+                className="text-xl font-bold mb-3"
+                style={{ color: "#BABCA7" }}
+              >
                 {feature.title}
               </h3>
 
