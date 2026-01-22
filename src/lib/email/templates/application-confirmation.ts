@@ -83,7 +83,7 @@ export function applicationConfirmationEmail({
             ${callSection}
           </div>
           <div class="footer">
-            <p>Jibal Adventures<br>Exhilarating yet safe. Exotic yet reliable.</p>
+            <p>Jibal Adventures<br>Conquer Mountains. Create Memories.</p>
           </div>
         </div>
       </body>
@@ -108,7 +108,7 @@ ${textCallSection}
 See you soon!
 
 Jibal Adventures
-Exhilarating yet safe. Exotic yet reliable.
+Conquer Mountains. Create Memories.
   `.trim();
 
   return { subject, html, text };
