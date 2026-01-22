@@ -255,8 +255,8 @@ export default function TermsPage() {
               <TermsSection title="12. Governing Law">
                 <p>
                   These terms are governed by the laws of the{" "}
-                  <strong>State of Kuwait</strong>. Any disputes shall be
-                  resolved in the courts of Kuwait.
+                  <strong>Abu Dhabi Global Market (ADGM)</strong>. Any disputes
+                  shall be resolved in the ADGM Courts.
                 </p>
               </TermsSection>
 

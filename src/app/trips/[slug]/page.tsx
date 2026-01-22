@@ -180,24 +180,6 @@ export default async function TripDetailPage({
                 </p>
               </div>
 
-              {/* WHO THIS TRIP IS FOR */}
-              <div className="bg-[#121E1E] rounded-2xl p-6 md:p-8">
-                <h2
-                  className="text-2xl font-bold mb-4"
-                  style={{ color: "#BABCA7" }}
-                >
-                  Who This Trip Is For
-                </h2>
-                <p className="text-white/80 leading-relaxed">
-                  This expedition is designed for adventurous travelers with{" "}
-                  {trip.fitnessLevel?.toLowerCase() || "moderate"} fitness
-                  levels who are comfortable hiking 6-8 hours per day. Previous
-                  trekking experience is recommended but not required. You
-                  should have a spirit of adventure and be prepared for variable
-                  weather conditions.
-                </p>
-              </div>
-
               {/* DATES & PRICES */}
               <div id="dates" className="bg-white rounded-2xl p-6 md:p-8">
                 <h2
