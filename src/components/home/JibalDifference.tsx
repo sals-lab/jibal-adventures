@@ -25,7 +25,7 @@ const features = [
     ),
     title: "Safety First",
     description:
-      "Every expedition is led by certified guides with extensive wilderness first aid training and local expertise.",
+      "Every adventure is led by certified local guides with extensive experience, and wilderness first aid training.",
   },
   {
     icon: (
@@ -45,7 +45,7 @@ const features = [
     ),
     title: "Small Groups",
     description:
-      "Maximum 12 travelers per trip ensures personalized attention and minimal environmental impact.",
+      "Maximum 12 travelers per trip ensures personalized attention to detail for each participant.",
   },
   {
     icon: (
@@ -65,7 +65,7 @@ const features = [
     ),
     title: "Local Connections",
     description:
-      "Deep partnerships with local communities provide authentic cultural experiences and support local economies.",
+      "Fostering long lasting partnerships with local communities is essential to us. Ensuring your adventure respects their home and leaves a lasting, positive footprint.",
   },
   {
     icon: (
@@ -85,7 +85,7 @@ const features = [
     ),
     title: "Premium Experience",
     description:
-      "Carefully curated accommodations, equipment, and meals that elevate your adventure without compromising authenticity.",
+      "Carefully curated experiences, that elevate your adventure without compromising on authenticity.",
   },
 ];
 

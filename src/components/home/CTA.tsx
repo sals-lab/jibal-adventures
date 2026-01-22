@@ -31,8 +31,8 @@ export function CTA() {
             Ready for Your Next Adventure?
           </h2>
           <p className="text-xl text-white/80 mb-10 leading-relaxed">
-            Join us on an unforgettable journey through the world's most
-            spectacular mountain ranges. Your adventure awaits.
+            Join us on our adventures through the world’s most spectacular
+            destinations curated for you.
           </p>
 
           {/* CTA Buttons */}

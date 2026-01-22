@@ -189,7 +189,7 @@ export default function ContactPage() {
                 <ContactItem
                   icon={<EmailIcon />}
                   title="Email Us"
-                  content="zooky@jibaladventures.com"
+                  content="Zooky@JibalAdventures.com"
                   href="mailto:zooky@jibaladventures.com"
                 />
 

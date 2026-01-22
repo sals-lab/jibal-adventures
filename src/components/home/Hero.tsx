@@ -31,15 +31,16 @@ export function Hero() {
 
         {/* Main Headline */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
-          Conquer Mountains.
+          Conquer Mountains
           <br />
-          <span className="text-[#BABCA7]">Create Memories.</span>
+          <span className="text-[#BABCA7]">Create Memories</span>
         </h1>
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10">
-          Expert-led expeditions to the world's most breathtaking peaks. Small
-          groups, big adventures, unforgettable experiences.
+          Expert led experiences through the world’s most breathtaking
+          destinations. Small groups, big adventures, and unforgettable travel
+          experiences curated for you.
         </p>
 
         {/* CTA Buttons */}

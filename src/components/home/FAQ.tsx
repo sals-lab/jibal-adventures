@@ -13,7 +13,7 @@ const faqs = [
   {
     question: "What fitness level do I need for your trips?",
     answer:
-      "Our trips range from moderate to challenging. Each trip listing includes a detailed fitness requirement. Generally, you should be comfortable hiking 6-8 hours per day with a daypack. We recommend starting a training program at least 8 weeks before your trip.",
+      "Our trips range from easy to challenging, offering something no matter what your adventure appetite is. Each trip has a fitness requirement and we want to ensure that you meet those requirements when you join, so that you properly enjoy each experience with us.",
   },
   {
     question: "What's included in the trip price?",
@@ -23,17 +23,17 @@ const faqs = [
   {
     question: "How do I book a trip?",
     answer:
-      "Browse our trips, select your preferred dates, and submit an application. Once approved, you'll pay a deposit to secure your spot. We'll then schedule a consultation call to discuss preparation and answer any questions.",
+      "Browse our trips and select your preferred dates then submit an application. Afterwards you’ll be able to schedule a call with your trip guide so that they can discuss preparation and answer any questions you may have. Once approved you’ll need to pay a non refundable deposit in order to secure your spot. (The deposit counts towards the overall trip price)",
   },
   {
     question: "What is your cancellation policy?",
     answer:
-      "Deposits are refundable up to 60 days before departure. Full payment is due 45 days before the trip. Cancellations within 45 days may be eligible for credit toward a future trip. We strongly recommend travel insurance.",
+      "Deposts made to secure your spot are non refundable. Full payment is due 45 days before the trip date. Cancellations made 4 weeks or more before the trip date are eligible for a 50% refund of the total trip cost. Excluding the non-refundable depost. Exemptions are applicable in certain cases beyond either parties control.",
   },
   {
     question: "Do you provide gear and equipment?",
     answer:
-      "We provide specialized group equipment like ropes and safety gear. Personal items like hiking boots, clothing, and sleeping bags are your responsibility. We send a detailed packing list after booking and can recommend where to purchase or rent gear.",
+      "We provide the necessary group equipment such as the ropes, tents and essential safety gear. Personal Items like hiking boots, clothing, and sleeping bags are your responsibility. We always send a detailed packing list after booking. If you do need to rent any equipment for any adventure with us let us know.",
   },
 ];
 

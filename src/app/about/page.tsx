@@ -104,9 +104,9 @@ export default function AboutPage() {
               Our Mission & Values
             </h2>
             <p className="text-[#5A6666] text-lg">
-              We're on a mission to make world-class mountain adventures
-              accessible to those ready to challenge themselves and discover
-              what they're capable of.
+              We’re on a mission to make world class adventure travel accessible
+              to those ready to create new memories and go beyond their comfort
+              zones.
             </p>
           </div>
 
@@ -114,7 +114,7 @@ export default function AboutPage() {
             <ValueCard
               icon={<ShieldIcon />}
               title="Safety First"
-              description="Every adventure is meticulously planned with safety as our foundation. Expert guides, quality equipment, and thorough preparation ensure you can focus on the experience."
+              description="Every adventure is meticulously planned with safety as our foundation. We ensure expert guides, thorough preparation, and careful planning so that you can enjoy the experience."
             />
             <ValueCard
               icon={<HeartIcon />}
@@ -123,8 +123,9 @@ export default function AboutPage() {
             />
             <ValueCard
               icon={<UsersIcon />}
-              title="Small Groups"
-              description="Intimate group sizes mean personalized attention, stronger bonds, and minimal environmental impact. Quality over quantity, always."
+              title="Local Communities"
+              description="We partner directly with local companies and families, ensuring your adventure respects their home and leaves a lasting, positive footprint.
+"
             />
           </div>
         </Container>
