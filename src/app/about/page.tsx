@@ -41,8 +41,8 @@ export default function AboutPage() {
               <div className="w-64 md:w-72 lg:w-80 aspect-[3/4] rounded-2xl overflow-hidden bg-[#E8E8E8]">
                 {/* Replace with actual founder photo */}
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=533&fit=crop"
-                  alt="Founder"
+                  src="/founder.jpg"
+                  alt="Abdulrazzaq Almojalhem (Zooky) - Founder of Jibal Adventures"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -60,26 +60,30 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 text-[#5A6666] leading-relaxed">
                 <p>
-                  My journey began at 19, standing at the base of Mount Toubkal
-                  in Morocco. That first summit changed everything—not just how
-                  I saw the mountains, but how I saw myself.
+                  My journey began in 2017, a single climb up to the summit of
+                  Mt. Kilimanjaro sparked a passion that lead me to founding
+                  Jibal Adventures. Since that first summit, I’ve returned to
+                  Kilimanjaro nine times and had the privilege of guiding over
+                  150 adventurers to peaks all over the world.
                 </p>
                 <p>
-                  After years of exploring peaks across four continents, I
-                  founded Jibal Adventures with a mission: to share these
-                  transformative experiences with others. "Jibal" means
-                  "mountains" in Arabic, a tribute to both my roots and the
-                  landscapes that shaped me.
+                  After years of exploring the world I found myself standing on
+                  the summit of Mt. Everest on May 17th, 2023, standing there
+                  looking out at the world confirmed what I knew: the journey is
+                  what shapes you.
                 </p>
                 <p>
-                  Today, we partner with expert local guides to create
-                  adventures that are exhilarating yet safe, exotic yet
-                  reliable. Every trip is designed to push your limits while
-                  ensuring you're supported every step of the way.
+                  Jibal means mountains in arabic, a tribute to both my roots
+                  and the landscapes that shaped me. I founded Jibal Adventures
+                  with one clear purpose: to bring that transformative
+                  experience to you. Whether it’s your first hike or your
+                  highest peak, I’m here to help you get there.
                 </p>
               </div>
               <div className="mt-8">
-                <p className="font-bold text-[#121E1E] text-lg">Zooky</p>
+                <p className="font-bold text-[#121E1E] text-lg">
+                  Abdulrazzaq Almojalhem (Zooky)
+                </p>
                 <p className="text-[#5A6666]">Founder, Jibal Adventures</p>
               </div>
             </div>
