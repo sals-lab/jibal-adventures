@@ -210,17 +210,6 @@ export default async function TripDetailPage({
                         Due at booking
                       </p>
                     </div>
-                    <div className="p-4 bg-[#F2F2F2] rounded-xl">
-                      <p className="text-sm text-[#5A6666]">
-                        Cancellation Policy
-                      </p>
-                      <p className="text-lg font-bold text-[#121E1E]">
-                        Flexible
-                      </p>
-                      <p className="text-xs text-[#5A6666] mt-1">
-                        Full refund 60+ days before
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>
