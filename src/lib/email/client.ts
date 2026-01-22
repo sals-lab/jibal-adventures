@@ -15,5 +15,5 @@ export const resend = new Resend(RESEND_API_KEY);
 // Your verified "from" email address
 // For testing, use: onboarding@resend.dev
 // For production, verify your domain in Resend dashboard
-export const FROM_EMAIL = "onboarding@resend.dev";
+export const FROM_EMAIL = "zooky@jibaladventures.com";
 export const FROM_NAME = "Jibal Adventures";
